@@ -30,9 +30,12 @@ router.register(r'users', UserViewSet)
 
 schema_view = get_swagger_view(title='store APIs')
 
-
 urlpatterns = [
+    url('', include('social_django.urls', namespace='social')),
+    url(r'^$', views.home),
+    url(r'^login/$', views.login),
     url(r'^admin/', admin.site.urls),
+    url(r'^authenticate/$', views.authenticate),
 
     url(r'^swagger/$', schema_view),
     url(r'^api/v1/', include(authentication_urls)),
@@ -40,4 +43,3 @@ urlpatterns = [
 
     url(r'^healthcheck/$', views.health_check),
 ]
-

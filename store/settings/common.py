@@ -1,4 +1,5 @@
 from __future__ import unicode_literals, absolute_import
+
 """
 Django settings for store project.
 
@@ -16,6 +17,7 @@ import os
 import dj_database_url
 import dj_email_url
 
+
 def is_ec2_linux():
     """Detect if we are running on an EC2 Linux Instance
         See http://docs.aws.amazon.com/AWSEC2/latest/UserGuide/identify_ec2_instances.html
@@ -25,6 +27,7 @@ def is_ec2_linux():
             uuid = f.read()
             return uuid.startswith("ec2")
     return False
+
 
 def get_linux_ec2_private_ip():
     """Get the private IP Address of the machine if running on an EC2 linux server"""
@@ -43,6 +46,7 @@ def get_linux_ec2_private_ip():
         if response:
             response.close()
 
+
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 PROJECT_ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -60,12 +64,33 @@ DEBUG = True
 SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
 
 # ElasticBeanstalk healthcheck sends requests with host header = internal ip
-# So we detect if we are in elastic beanstalk, 
+# So we detect if we are in elastic beanstalk,
 # and add the instances private ip address
 ALLOWED_HOSTS = ['localhost', '127.0.0.1']
 private_ip = get_linux_ec2_private_ip()
 if private_ip:
     ALLOWED_HOSTS.append(private_ip)
+
+SOCIAL_AUTH_GOOGLE_OAUTH2_KEY = os.getenv('GOOGLE_OAUTH_KEY',
+                                          '410823603081-vudmb642jcmkv4n5hnej6ti4duiemdh8.apps.googleusercontent.com')
+SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = os.getenv('GOOGLE_OAUTH_SECRET', 'gLNUFKmej4bbflnmKzFMR1k3')
+SOCIAL_AUTH_ENABLED_BACKENDS = ('google')
+
+SOCIAL_AUTH_GOOGLE_OAUTH2_IGNORE_DEFAULT_SCOPE = True
+
+SOCIAL_AUTH_GOOGLE_OAUTH2_SCOPE = [
+    'https://www.googleapis.com/auth/userinfo.email',
+    'https://www.googleapis.com/auth/userinfo.profile',
+]
+
+LOGIN_URL = "/login/"
+LOGIN_REDIRECT_URL = '/'
+
+AUTHENTICATION_BACKENDS = (
+    'social_core.backends.google.GoogleOAuth2',
+    'django.contrib.auth.backends.ModelBackend',
+    'django.contrib.auth.backends.ModelBackend',
+)
 
 INSTALLED_APPS = [
     'django.contrib.admin',
@@ -78,15 +103,17 @@ INSTALLED_APPS = [
     # http://whitenoise.evans.io/en/stable/django.html#using-whitenoise-in-development
     'whitenoise.runserver_nostatic',
     'django.contrib.staticfiles',
-    
+    'djcelery',
     'rest_framework',
     'rest_framework_swagger',
     'rest_framework.authtoken',
+    'social_django',
+    'store',
     'store.authentication',
-    
+
 ]
 
-MIDDLEWARE = [
+MIDDLEWARE_CLASSES = [
     'django.middleware.security.SecurityMiddleware',
     'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
@@ -270,8 +297,6 @@ USE_L10N = True
 
 USE_TZ = True
 
-
-
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.10/howto/static-files/
 
@@ -287,11 +312,9 @@ STATICFILES_DIRS = [
     os.path.join(PROJECT_ROOT, 'static'),
 ]
 
-
 ########## CELERY
-CELERY_BROKER_URL = os.environ.get('CELERY_BROKER_URL', 'redis://127.0.0.1:6379/0')
-CELERY_BROKER_TRANSPORT = 'redis'
+BROKER_URL = os.environ.get('CELERY_BROKER_URL', 'redis://127.0.0.1:6379/0')
+BROKER_TRANSPORT = 'redis'
 CELERYBEAT_SCHEDULER = 'djcelery.schedulers.DatabaseScheduler'
 # In development, all tasks will be executed locally by blocking until the task returns
 ########## END CELERY
-

@@ -5,6 +5,7 @@ build/
 dist/
 jinjasql.egg-info/
 venv
+.idea
 *.sqlite3
 staticfiles
 .env
