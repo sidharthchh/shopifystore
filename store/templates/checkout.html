@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Bootstrap E-commerce Templates</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="">
+  <!--[if ie]>
+  <meta content='IE=8' http-equiv='X-UA-Compatible'/><![endif]-->
+  <!-- bootstrap -->
+  <link href="/static/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+  <link href="/static/bootstrap/css/bootstrap-responsive.min.css" rel="stylesheet">
+  <link href="/static/themes/css/bootstrappage.css" rel="stylesheet"/>
+
+  <!-- global styles -->
+  <link href="/static/themes/css/flexslider.css" rel="stylesheet"/>
+  <link href="/static/themes/css/main.css" rel="stylesheet"/>
+
+  <!-- scripts -->
+  <script src="/static/themes/js/jquery-1.7.2.min.js"></script>
+  <script src="/static/bootstrap/js/bootstrap.min.js"></script>
+  <script src="/static/themes/js/superfish.js"></script>
+  <script src="/static/themes/js/jquery.scrolltotop.js"></script>
+  <!--[if lt IE 9]>
+  <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+  <script src="/static/themes/js/respond.min.js"></script>
+  <![endif]-->
+</head>
+<body>
+<div id="top-bar" class="container">
+  <div class="row">
+    <div class="span4">
+
+    </div>
+    <div class="span8">
+      <div class="account pull-right">
+        <ul class="user-menu">
+          <li><a href="#">My Orders</a></li>
+          <li><a href="cart.html">Your Cart: {{cart}}</a></li>
+          <li><a href="checkout.html">Checkout</a></li>
+          <li><b>{{user.email}}</b></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+<div id="wrapper" class="container">
+  <section class="header_text sub">
+    <h4><span>Check Out</span></h4>
+  </section>
+  <section class="main-content">
+    <div class="row">
+      <div class="span12">
+        <div class="accordion" id="accordion2">
+          <div class="accordion-group">
+            <div class="accordion-heading">
+              <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion2" href="#collapseThree">Confirm
+                Order</a>
+            </div>
+            <div id="collapseThree" class="accordion-body in collapse">
+              <div class="accordion-inner">
+                <div class="row-fluid">
+                  {% if cart_no > 0 %}
+                  <form action="/create_order_for_user/" method="post">{% csrf_token %}
+                    <div class="control-group">
+                      <label for="textarea" class="control-label"><b>Address</b></label>
+                      <div class="controls">
+                        <textarea rows="5" name="address" required id="textarea" class="span12"></textarea>
+                      </div>
+                      <label for="phone" class="control-label"><b>phone</b></label>
+                      <div class="controls">
+                        <textarea rows="1" name="phone" required id="phone" class="span12"></textarea>
+                      </div>
+                      <label for="city" class="control-label"><b>city</b></label>
+                      <div class="controls">
+                        <textarea rows="1" name="city" required id="city" class="span12"></textarea>
+                      </div>
+                      <label for="state" class="control-label"><b>state</b></label>
+                      <div class="controls">
+                        <textarea rows="1" name="state" required id="state" class="span12"></textarea>
+                      </div>
+                      <label for="country" class="control-label"><b>country</b></label>
+                      <div class="controls">
+                        <textarea rows="1" name="country" required id="country" class="span12"></textarea>
+                      </div>
+                      <label for="zip" class="control-label"><b>Pin code</b></label>
+                      <div class="controls">
+                        <textarea rows="1" name="pin" required id="zip" class="span12"></textarea>
+                      </div>
+                    </div>
+                    <input type="submit" class="btn btn-inverse pull-right" value="Confirm order"></input>
+                  </form>
+                  {% endif %}
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  <section id="copyright">
+    <span>Copyright 2013 bootstrappage template  All right reserved.</span>
+  </section>
+</div>
+<script src="themes/js/common.js"></script>
+</body>
+</html>

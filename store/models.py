@@ -1,3 +1,4 @@
+from django.contrib.auth.models import User
 from django.db import models
 from jsonfield import JSONField
 
@@ -34,3 +35,11 @@ class Order(models.Model):
 
     def __str__(self):
         return "#{}".format(self.order_number)
+
+
+class Cart(models.Model):
+    """
+        Model to store Cart
+    """
+    product = models.ForeignKey(Product)
+    user = models.ForeignKey(User)

@@ -14,32 +14,32 @@ Including another URLconf
     2. Add a URL to urlpatterns:  url(r'^blog/', include('blog.urls'))
 """
 from __future__ import unicode_literals, absolute_import
-from . import views
 
 from django.conf.urls import url, include
 from django.contrib import admin
 
-from rest_framework.routers import DefaultRouter
-from rest_framework_swagger.views import get_swagger_view
+from . import views, webhooks
 
-from .authentication.views import UserViewSet
-from .authentication import urls as authentication_urls
+# router = DefaultRouter()
+# router.register(r'users', UserViewSet)
 
-router = DefaultRouter()
-router.register(r'users', UserViewSet)
-
-schema_view = get_swagger_view(title='store APIs')
+# schema_view = get_swagger_view(title='store APIs')
 
 urlpatterns = [
     url('', include('social_django.urls', namespace='social')),
     url(r'^$', views.home),
     url(r'^login/$', views.login),
+    url(r'^cart/$', views.cart),
+    url(r'^checkout/$', views.checkout),
     url(r'^admin/', admin.site.urls),
     url(r'^authenticate/$', views.authenticate),
-
-    url(r'^swagger/$', schema_view),
-    url(r'^api/v1/', include(authentication_urls)),
-    url(r'^api/v1/', include(router.urls)),
+    url(r'^product_delete/$', webhooks.product_delete),
+    url(r'^product_update_create/$', webhooks.product_update_create),
+    url(r'^create_order_for_user/$', views.create_order_for_user),
+    url(r'^add_to_cart/$', views.add_to_cart),
+    # url(r'^swagger/$', schema_view),
+    # url(r'^api/v1/', include(authentication_urls)),
+    # url(r'^api/v1/', include(router.urls)),
 
     url(r'^healthcheck/$', views.health_check),
 ]

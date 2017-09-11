@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Bootstrap E-commerce Templates</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="">
+  <!--[if ie]>
+  <meta content='IE=8' http-equiv='X-UA-Compatible'/><![endif]-->
+  <!-- bootstrap -->
+  <link href="/static/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+  <link href="/static/bootstrap/css/bootstrap-responsive.min.css" rel="stylesheet">
+
+  <link href="/static/themes/css/bootstrappage.css" rel="stylesheet"/>
+
+  <!-- global styles -->
+  <link href="/static/themes/css/flexslider.css" rel="stylesheet"/>
+  <link href="/static/themes/css/main.css" rel="stylesheet"/>
+
+  <!-- scripts -->
+  <script src="/static/themes/js/jquery-1.7.2.min.js"></script>
+  <script src="/static/bootstrap/js/bootstrap.min.js"></script>
+  <script src="/static/themes/js/superfish.js"></script>
+  <script src="/static/themes/js/jquery.scrolltotop.js"></script>
+  <!--[if lt IE 9]>
+  <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+  <script src="js/respond.min.js"></script>
+  <![endif]-->
+</head>
+<body>
+<div id="top-bar" class="container">
+  <div class="row">
+    <div class="span4">
+
+    </div>
+    <div class="span8">
+      <div class="account pull-right">
+        <ul class="user-menu">
+          <li><a href="/orders">My Orders</a></li>
+          <li><a href="/cart">Your Cart: {{cart}}</a></li>
+          <li><a href="/checkout">Checkout</a></li>
+          <li><b>{{user.email}}</b></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+<div id="wrapper" class="container">
+  <section class="navbar main-menu">
+    <div class="navbar-inner main-menu">
+      <a href="index.html" class="logo pull-left"><img src="/static/themes/images/logo.png" class="site_logo"
+                                                       alt=""></a>
+    </div>
+  </section>
+  <section class="main-content">
+    <div class="row">
+      <div class="span12">
+        <div class="row">
+          <div class="span12">
+            <h4 class="title">
+              <span class="pull-left"><span class="text"><span
+                class="line">Feature <strong>Products</strong></span></span></span>
+            </h4>
+            <div>
+              <div>
+                <div class="active item">
+                  {% for product in products %}
+                  <ul class="thumbnails">
+                    <li class="span3">
+                      <div class="product-box">
+                        <span class="sale_tag"></span>
+                        <p><img src="{{product.image.src}}" alt=""/></a></p>
+                        <a href="product_detail.html" class="title">{{product.title}}</a>
+                        <p class="price">Rs. {{product.variants.0.price}}</p>
+                      </div>
+                    </li>
+                    <li>
+                      <form action='/add_to_cart/' method="post">{% csrf_token %}
+                        <input type="hidden" name="id" value="{{product.id}}">
+                        {% if product.id in cart_items %}
+                        <input type="submit" disabled  value="Add to Cart">
+                        <b>Only One item per user allowed</b>
+                        {% else %}
+                        <input type="submit"  value="Add to Cart">
+                        {% endif %}
+                      </form>
+                    </li>
+                  </ul>
+                  {% endfor %}
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <br/>
+        <div class="row feature_box">
+          <div class="span4">
+            <div class="service">
+              <div class="responsive">
+                <img src="themes/images/feature_img_2.png" alt=""/>
+                <h4>MODERN <strong>DESIGN</strong></h4>
+                <p>Lorem Ipsum is simply dummy text of the printing and printing industry unknown printer.</p>
+              </div>
+            </div>
+          </div>
+          <div class="span4">
+            <div class="service">
+              <div class="customize">
+                <img src="themes/images/feature_img_1.png" alt=""/>
+                <h4>FREE <strong>SHIPPING</strong></h4>
+                <p>Lorem Ipsum is simply dummy text of the printing and printing industry unknown printer.</p>
+              </div>
+            </div>
+          </div>
+          <div class="span4">
+            <div class="service">
+              <div class="support">
+                <img src="themes/images/feature_img_3.png" alt=""/>
+                <h4>24/7 LIVE <strong>SUPPORT</strong></h4>
+                <p>Lorem Ipsum is simply dummy text of the printing and printing industry unknown printer.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  <section id="copyright">
+    <span>Copyright 2013 bootstrappage template  All right reserved.</span>
+  </section>
+</div>
+<script src="/static/themes/js/common.js"></script>
+<script src="/static/themes/js/jquery.flexslider-min.js"></script>
+<script type="text/javascript">
+  $(function () {
+    $(document).ready(function () {
+      $('.flexslider').flexslider({
+        animation: "fade",
+        slideshowSpeed: 4000,
+        animationSpeed: 600,
+        controlNav: false,
+        directionNav: true,
+        controlsContainer: ".flex-container" // the container that holds the flexslider
+      });
+    });
+  });
+</script>
+</body>
+</html>

@@ -1,10 +1,12 @@
 from __future__ import unicode_literals, absolute_import
 
+from django.contrib import auth
 from django.contrib.auth.decorators import login_required
-from django.views.decorators.csrf import csrf_exempt
 from django.http.response import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render, redirect
-from django.contrib import auth
+
+from store.models import Product, Cart
+from store.order import create_order, clear_cart
 
 
 def health_check(request):
@@ -15,12 +17,51 @@ def login(request):
     return render(request, 'login.html')
 
 
+def checkout(request):
+    cart = Cart.objects.filter(user=request.user)
+    return render(request, 'checkout.html', {"cart_items": cart, "cart_no": cart.count()})
+
+
+@login_required
+def cart(request):
+    """
+    Return login page
+    Args:
+        request: 
+
+    Returns:
+
+    """
+    cart = Cart.objects.filter(user=request.user)
+    return render(request, 'cart.html', {"cart_items": cart, "cart_no": cart.count()})
+
+
 @login_required
 def home(request):
-    return render(request, 'home.html')
+    """
+    return home page
+    Args:
+        request: 
+
+    Returns:
+
+    """
+    cart = Cart.objects.filter(user=request.user).values_list('product__id', flat=True)
+    cart_no = cart.count()
+    products = Product.objects.all()
+    return render(request, 'index.html', {"products": products, "cart": cart_no,
+                                          "cart_items": cart})
 
 
 def authenticate(request):
+    """
+    Authenticate a user
+    Args:
+        request: 
+
+    Returns:
+
+    """
     username = request.POST.get('username', '')
     password = request.POST.get('password', '')
 
@@ -38,27 +79,37 @@ def authenticate(request):
         return HttpResponseRedirect("Invalid username or password")
 
 
-@csrf_exempt
-def webhook_products(request):
+def create_order_for_user(request):
     """
-    This view is used to accept the webhooks from shopify for products
+    
     Args:
-        request: request object from the webhook
+        request: 
 
-    Returns: status 200
+    Returns:
 
     """
-    pass
+    address = request.POST.get('address')
+    phone = request.POST.get('phone')
+    city = request.POST.get('city')
+    country = request.POST.get('country')
+    state = request.POST.get('state')
+    pin = request.POST.get('pin')
+    user = request.user
+    create_order(address, phone, city, country, state, pin, user)
+    clear_cart(user)
+    return redirect('/')
 
 
-@csrf_exempt
-def webhook_orders(request):
+def add_to_cart(request):
     """
-    This view is used to accept the webhooks from shopify for orders
+    
     Args:
-        request: request object from the webhook
+        request: 
 
-    Returns: status 200
+    Returns:
 
     """
-    pass
+    product_id = request.POST.get("id", "")
+    user = request.user
+    Cart.objects.create(user=user, product_id=product_id)
+    return redirect('/')
