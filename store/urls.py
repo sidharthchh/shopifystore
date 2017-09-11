@@ -15,8 +15,10 @@ Including another URLconf
 """
 from __future__ import unicode_literals, absolute_import
 
+from django.conf import settings
 from django.conf.urls import url, include
 from django.contrib import admin
+from django.contrib.auth.views import logout
 
 from . import views, webhooks
 
@@ -29,12 +31,17 @@ urlpatterns = [
     url('', include('social_django.urls', namespace='social')),
     url(r'^$', views.home),
     url(r'^login/$', views.login),
+    url(r'^logout/$', logout, {'next_page': settings.LOGOUT_REDIRECT_URL}, name='logout'),
     url(r'^cart/$', views.cart),
     url(r'^checkout/$', views.checkout),
+    url(r'^orders/$', views.orders),
+    url(r'^all_orders/$', views.all_orders),
     url(r'^admin/', admin.site.urls),
     url(r'^authenticate/$', views.authenticate),
     url(r'^product_delete/$', webhooks.product_delete),
     url(r'^product_update_create/$', webhooks.product_update_create),
+    url(r'^order_delete/$', webhooks.order_delete),
+    url(r'^order_update_create/$', webhooks.order_update_create),
     url(r'^create_order_for_user/$', views.create_order_for_user),
     url(r'^add_to_cart/$', views.add_to_cart),
     # url(r'^swagger/$', schema_view),

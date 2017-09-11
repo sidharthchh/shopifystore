@@ -31,12 +31,25 @@ def create_or_update_order(order):
                                        'order_id': order.get('id'),
                                        'created_at': order.get('created_at'),
                                        'updated_at': order.get('updated_at'),
-                                       'user_email': order.get('user_email'),
+                                       'user_email': order.get('email'),
                                        'total_price': order.get('total_price'),
                                        'order_number': order.get('order_number'),
                                        'line_items': order.get('line_items')
 
                                    })
+
+
+def delete_order(order_id):
+    """
+    Method to delete a order. 
+    Here we need not have a try except as we are using filter
+    Args:
+        order_id: to delete a order
+
+    Returns: None
+
+    """
+    Order.objects.filter(order_id=order_id).delete()
 
 
 def create_line_items(user):
@@ -82,9 +95,7 @@ def create_order(address, phone, city, country, state, pin, user):
     payload = {
         "order": {
             "email": user.email,
-            "fulfillment_status": "fulfilled",
             "send_receipt": True,
-            "send_fulfillment_receipt": True,
             "line_items": line_items,
             "customer": {
                 "first_name": user.first_name,
@@ -95,7 +106,6 @@ def create_order(address, phone, city, country, state, pin, user):
             "shipping_address": create_address(address, phone, city, country, state, pin, user),
         }
     }
-    print payload
     response = requests.post(url=settings.SHOPIFY_ORDER_URL, json=payload)
-    print response.content
-    # TODO: check the response and return
+    # if response.status_code in (200, 201):
+    #     update_inventory(line_items)

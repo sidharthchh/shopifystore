@@ -31,8 +31,8 @@
   <div class="row">
     <div class="span4">
       <ul class="user-menu">
-          <li><a href="/">Home</a></li>
-        </ul>
+        <li><a href="/">Home</a></li>
+      </ul>
     </div>
     <div class="span8">
       <div class="account pull-right">
@@ -49,38 +49,38 @@
 </div>
 <div id="wrapper" class="container">
   <section class="header_text sub">
-    <h4><span>Shopping Cart</span></h4>
+    <h4><span>My Orders</span></h4>
   </section>
   <section class="main-content">
     <div class="row">
       <div class="span9">
-        <h4 class="title"><span class="text"><strong>Your</strong> Cart</span></h4>
+        <h4 class="title"><span class="text"><strong>My</strong> Orders</span></h4>
         <table class="table table-striped">
           <thead>
           <tr>
-            <th>Image</th>
-            <th>Product Name</th>
-            <th>Quantity</th>
-            <th>Unit Price</th>
+            <th>Order Number</th>
+            <th>Products</th>
+            <th>Date</th>
             <th>Total</th>
           </tr>
           </thead>
           <tbody>
-          {% for item in cart_items %}
+          {% for order in orders %}
           <tr>
-            <td><img alt="" width="50" src="{{item.product.image.src}}"></td>
-            <td>{{item.product.title}}</td>
-            <td>1</td>
-            <td>Rs. {{item.product.variants.0.price}}</td>
-            <td>Rs. {{item.product.variants.0.price}}</td>
+            <td>{{order.order_number}}</td>
+            <td>
+              <ul>{% for item in order.line_items %}
+                <li>{{item.title}}</li>
+                {% endfor %}
+              </ul>
+            </td>
+            <td>{{order.created_at}}</td>
+            <td>Rs. {{order.total_price}}</td>
           </tr>
           {% endfor %}
           </tbody>
         </table>
         <hr/>
-        <p class="buttons center">
-          <button class="btn btn-inverse" type="submit" id="checkout">Checkout</button>
-        </p>
       </div>
     </div>
   </section>
@@ -90,12 +90,5 @@
   </section>
 </div>
 <script src="themes/js/common.js"></script>
-<script>
-  $(document).ready(function () {
-    $('#checkout').click(function (e) {
-      document.location.href = "/checkout";
-    })
-  });
-</script>
 </body>
 </html>

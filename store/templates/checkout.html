@@ -30,15 +30,18 @@
 <div id="top-bar" class="container">
   <div class="row">
     <div class="span4">
-
+      <ul class="user-menu">
+          <li><a href="/">Home</a></li>
+        </ul>
     </div>
     <div class="span8">
       <div class="account pull-right">
         <ul class="user-menu">
-          <li><a href="#">My Orders</a></li>
-          <li><a href="cart.html">Your Cart: {{cart}}</a></li>
-          <li><a href="checkout.html">Checkout</a></li>
+          <li><a href="/orders/">My Orders</a></li>
+          <li><a href="/cart/">Your Cart: {{cart}}</a></li>
+          <li><a href="/checkout/">Checkout</a></li>
           <li><b>{{user.email}}</b></li>
+          <li><a href="/logout/">Logout</a></li>
         </ul>
       </div>
     </div>
@@ -90,6 +93,8 @@
                     </div>
                     <input type="submit" class="btn btn-inverse pull-right" value="Confirm order"></input>
                   </form>
+                  {% else %}
+                  CART IS EMPTY
                   {% endif %}
                 </div>
               </div>

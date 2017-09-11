@@ -1,3 +1,6 @@
+import requests
+from django.conf import settings
+
 from models import Product
 
 
@@ -48,3 +51,16 @@ def delete_product(product_id):
 
     """
     Product.objects.filter(product_id=product_id).delete()
+
+
+
+def update_inventory(line_items):
+    for item in line_items:
+        url = settings.SHOPIFY_VARIANT_UPDATE_URL.format(item.get("variant_id"))
+        payload = {
+            "variant": {
+                "id": item.get("variant_id"),
+                "inventory_quantity_adjustment": -1
+            }
+        }
+        response = requests.put(url, json=payload)

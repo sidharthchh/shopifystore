@@ -312,6 +312,8 @@ STATICFILES_DIRS = [
     os.path.join(PROJECT_ROOT, 'static'),
 ]
 
+LOGOUT_REDIRECT_URL = "/login"
+
 ########## CELERY
 BROKER_URL = os.environ.get('CELERY_BROKER_URL', 'redis://127.0.0.1:6379/0')
 BROKER_TRANSPORT = 'redis'
@@ -326,4 +328,7 @@ SHOPIFY_HOSTNAME = os.environ.get("SHOPIFY_HOSTNAME")
 SHOPIFY_BASE_URL = "https://{}:{}@{}".format(SHOPIFY_API_KEY, SHOPIFY_PASSWORD, SHOPIFY_HOSTNAME)
 SHOPIFY_PRODUCT_URL = SHOPIFY_BASE_URL + "/admin/products.json"
 SHOPIFY_ORDER_URL = SHOPIFY_BASE_URL + "/admin/orders.json"
+SHOPIFY_VARIANT_UPDATE_URL = SHOPIFY_BASE_URL + "/admin/variants/#{}.json"
 SHOPIFY_WEBHOOK_SIGNATURE = os.environ.get("SHOPIFY_WEBHOOK_SIGNATURE")
+
+RETRIAL_COUNT = 3

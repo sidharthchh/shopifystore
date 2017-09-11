@@ -31,15 +31,18 @@
 <div id="top-bar" class="container">
   <div class="row">
     <div class="span4">
-
+      <ul class="user-menu">
+          <li><a href="/">Home</a></li>
+        </ul>
     </div>
     <div class="span8">
       <div class="account pull-right">
         <ul class="user-menu">
-          <li><a href="/orders">My Orders</a></li>
-          <li><a href="/cart">Your Cart: {{cart}}</a></li>
-          <li><a href="/checkout">Checkout</a></li>
+          <li><a href="/orders/">My Orders</a></li>
+          <li><a href="/cart/">Your Cart: {{cart}}</a></li>
+          <li><a href="/checkout/">Checkout</a></li>
           <li><b>{{user.email}}</b></li>
+          <li><a href="/logout/">Logout</a></li>
         </ul>
       </div>
     </div>
@@ -97,7 +100,7 @@
           <div class="span4">
             <div class="service">
               <div class="responsive">
-                <img src="themes/images/feature_img_2.png" alt=""/>
+                <img src="/static/themes/images/feature_img_2.png" alt=""/>
                 <h4>MODERN <strong>DESIGN</strong></h4>
                 <p>Lorem Ipsum is simply dummy text of the printing and printing industry unknown printer.</p>
               </div>
@@ -106,7 +109,7 @@
           <div class="span4">
             <div class="service">
               <div class="customize">
-                <img src="themes/images/feature_img_1.png" alt=""/>
+                <img src="/static/themes/images/feature_img_1.png" alt=""/>
                 <h4>FREE <strong>SHIPPING</strong></h4>
                 <p>Lorem Ipsum is simply dummy text of the printing and printing industry unknown printer.</p>
               </div>
@@ -115,7 +118,7 @@
           <div class="span4">
             <div class="service">
               <div class="support">
-                <img src="themes/images/feature_img_3.png" alt=""/>
+                <img src="/static/themes/images/feature_img_3.png" alt=""/>
                 <h4>24/7 LIVE <strong>SUPPORT</strong></h4>
                 <p>Lorem Ipsum is simply dummy text of the printing and printing industry unknown printer.</p>
               </div>

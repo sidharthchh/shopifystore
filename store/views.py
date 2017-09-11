@@ -5,7 +5,7 @@ from django.contrib.auth.decorators import login_required
 from django.http.response import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render, redirect
 
-from store.models import Product, Cart
+from store.models import Product, Cart, Order
 from store.order import create_order, clear_cart
 
 
@@ -34,6 +34,37 @@ def cart(request):
     """
     cart = Cart.objects.filter(user=request.user)
     return render(request, 'cart.html', {"cart_items": cart, "cart_no": cart.count()})
+
+
+@login_required
+def orders(request):
+    """
+    Return login page
+    Args:
+        request: 
+
+    Returns:
+
+    """
+    orders = Order.objects.filter(user_email=request.user.email)
+    return render(request, 'orders.html', {"orders": orders})
+
+
+@login_required
+def all_orders(request):
+    """
+    Return login page
+    Args:
+        request: 
+
+    Returns:
+
+    """
+    if request.user.is_staff:
+        orders = Order.objects.all()
+        return render(request, 'all_orders.html', {"orders": orders})
+    else:
+        return redirect('/orders')
 
 
 @login_required

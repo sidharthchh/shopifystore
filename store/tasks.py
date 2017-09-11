@@ -32,5 +32,6 @@ def fetch_orders_from_shopify():
 
     """
     response = request_helper.get_request(url=settings.SHOPIFY_ORDER_URL)
+    print response.content
     orders = json.loads(response.content).get('orders', [])
     order.update_order_in_db(orders)
